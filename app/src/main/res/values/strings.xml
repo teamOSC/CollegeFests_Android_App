@@ -17,6 +17,12 @@
         <item>Updates</item>
         <item>Register</item>
         <item>Contact</item>
+        <item>Reach Us</item>
     </string-array>
+
+    <string name="title_marker_reach_us">Open Source Coders</string>
+    <string name="maps_api_key">AIzaSyActtQw_3K0m95CcEVwdVrNmXQ3SMrMfkM</string>
+    <string name="latitude_reach_us" type="dimen">0.0</string>
+    <string name="longitude_reach_us" type="dimen">0.0</string>
 
 </resources>

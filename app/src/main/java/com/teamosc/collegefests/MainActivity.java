@@ -22,6 +22,7 @@ import android.widget.TextView;
 import com.teamosc.collegefests.fragments.AboutFragment;
 import com.teamosc.collegefests.fragments.ContactFragment;
 import com.teamosc.collegefests.fragments.EventsFragment;
+import com.teamosc.collegefests.fragments.ReachUsFragment;
 import com.teamosc.collegefests.fragments.RegisterFragment;
 import com.teamosc.collegefests.fragments.UpdatesFragment;
 
@@ -64,13 +65,14 @@ public class MainActivity extends ActionBarActivity
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
         FragmentManager fragmentManager = getSupportFragmentManager();
-        Fragment showFragment = AboutFragment.newInstance("a", "a");
+        Fragment showFragment = null;
         switch (position){
             case 0: showFragment = AboutFragment.newInstance("a", "a"); break;
             case 1: showFragment = EventsFragment.newInstance("a", "a"); break;
             case 2: showFragment = UpdatesFragment.newInstance("a", "a"); break;
             case 3: showFragment = RegisterFragment.newInstance("a", "a"); break;
             case 4: showFragment = ContactFragment.newInstance("a", "a"); break;
+            case 5: showFragment = ReachUsFragment.newInstance("a", "a"); break;
         }
         fragmentManager.beginTransaction()
                 .replace(R.id.container, showFragment)

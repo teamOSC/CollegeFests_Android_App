@@ -25,4 +25,7 @@
     <string name="latitude_reach_us" type="dimen">0.0</string>
     <string name="longitude_reach_us" type="dimen">0.0</string>
 
+    <!-- About fragment Strings -->
+    <string name="about_content">Long description of the fest</string>
+
 </resources>

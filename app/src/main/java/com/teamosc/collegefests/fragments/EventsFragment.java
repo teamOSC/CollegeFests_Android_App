@@ -1,14 +1,22 @@
 package com.teamosc.collegefests.fragments;
 
 import android.app.Activity;
+import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
+import android.widget.TextView;
 
+import com.haarman.listviewanimations.itemmanipulation.ExpandableListItemAdapter;
+import com.haarman.listviewanimations.swinginadapters.prepared.AlphaInAnimationAdapter;
 import com.teamosc.collegefests.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -29,6 +37,10 @@ public class EventsFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private View rootView;
+
+    private MyExpandableListItemAdapter mExpandableListItemAdapter;
 
     private OnFragmentInteractionListener mListener;
 
@@ -66,7 +78,20 @@ public class EventsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_events, container, false);
+
+        rootView = inflater.inflate(R.layout.fragment_events, container, false);
+        ListView eventsListView = (ListView) rootView.findViewById(R.id.list_events);
+        List<String> mList = new ArrayList<String>();
+        mList.add("umair");
+        mList.add("omerjerk");
+        mList.add("yo");
+        mExpandableListItemAdapter = new MyExpandableListItemAdapter(getActivity(), mList);
+        AlphaInAnimationAdapter alphaInAnimationAdapter = new AlphaInAnimationAdapter(mExpandableListItemAdapter);
+        alphaInAnimationAdapter.setAbsListView(eventsListView);
+        alphaInAnimationAdapter.setInitialDelayMillis(500);
+
+        eventsListView.setAdapter(alphaInAnimationAdapter);
+        return rootView;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -106,6 +131,41 @@ public class EventsFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
+    }
+
+    private static class MyExpandableListItemAdapter extends ExpandableListItemAdapter<String> {
+
+        private Context mContext;
+
+        /*
+         * This will create a new ExpandableListItemAdapter, providing a custom layout resource,
+         * and the two child ViewGroups' id's. If you don't want this, just pass either just the
+         * Context, or the Context and the List<T> up to super.
+         */
+        private MyExpandableListItemAdapter(Context context, List<String> items) {
+            super(context, R.layout.expandable_event_card, R.id.activity_expandablelistitem_card_title, R.id.activity_expandablelistitem_card_content, items);
+            mContext = context;
+        }
+
+        @Override
+        public View getTitleView(int position, View convertView, ViewGroup parent) {
+            TextView tv = (TextView) convertView;
+            if (tv == null) {
+                tv = new TextView(mContext);
+            }
+            tv.setText("Checking derp");
+            return tv;
+        }
+
+        @Override
+        public View getContentView(int position, View convertView, ViewGroup parent) {
+            TextView tv = (TextView) convertView;
+            if (tv == null) {
+                tv = new TextView(mContext);
+            }
+            tv.setText("Checking derp2");
+            return tv;
+        }
     }
 
 }

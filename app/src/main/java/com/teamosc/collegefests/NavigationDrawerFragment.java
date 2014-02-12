@@ -1,6 +1,8 @@
 package com.teamosc.collegefests;
 
-import android.support.v7.app.ActionBarActivity;;
+import android.content.Context;
+import android.graphics.Typeface;
+import android.support.v7.app.ActionBarActivity;
 import android.app.Activity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -19,8 +21,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseExpandableListAdapter;
+import android.widget.ExpandableListView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
@@ -51,7 +61,7 @@ public class NavigationDrawerFragment extends Fragment {
     private ActionBarDrawerToggle mDrawerToggle;
 
     private DrawerLayout mDrawerLayout;
-    private ListView mDrawerListView;
+    private ExpandableListView mDrawerListView;
     private View mFragmentContainerView;
 
     private int mCurrentSelectedPosition = 0;
@@ -89,7 +99,7 @@ public class NavigationDrawerFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        mDrawerListView = (ListView) inflater.inflate(
+        mDrawerListView = (ExpandableListView) inflater.inflate(
                 R.layout.fragment_navigation_drawer, container, false);
         mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -97,12 +107,38 @@ public class NavigationDrawerFragment extends Fragment {
                 selectItem(position);
             }
         });
+        List<String> groupList = new ArrayList<String>();
+        Map<String, List<String>> navItemsCollection = new LinkedHashMap<String, List<String>>();
+
         String[] drawerItems = getResources().getStringArray(R.array.drawer_items);
-        mDrawerListView.setAdapter(new ArrayAdapter<String>(
-                getActionBar().getThemedContext(),
-                android.R.layout.simple_list_item_1,
-                android.R.id.text1,
-                drawerItems));
+        for (String drawerItem : drawerItems) {
+            groupList.add(drawerItem);
+            List<String> childList = new ArrayList<String>();
+            if (drawerItem.equals("Events")) {
+                //TODO: Automate it using data from xml
+                childList.add("Day1");
+                childList.add("Day2");
+                childList.add("Day3");
+            }
+            navItemsCollection.put(drawerItem, childList);
+        }
+
+        final ExpandableListAdapter expListAdapter = new ExpandableListAdapter(
+                getActivity(), groupList, navItemsCollection);
+        mDrawerListView.setAdapter(expListAdapter);
+
+        mDrawerListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+
+            public boolean onChildClick(ExpandableListView parent, View v,
+                                        int groupPosition, int childPosition, long id) {
+                final String selected = (String) expListAdapter.getChild(
+                        groupPosition, childPosition);
+                Toast.makeText(getActivity(), selected, Toast.LENGTH_LONG)
+                        .show();
+
+                return true;
+            }
+        });
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         return mDrawerListView;
     }
@@ -275,5 +311,79 @@ public class NavigationDrawerFragment extends Fragment {
          * Called when an item in the navigation drawer is selected.
          */
         void onNavigationDrawerItemSelected(int position);
+    }
+
+    public class ExpandableListAdapter extends BaseExpandableListAdapter {
+
+        private Activity context;
+        private Map<String, List<String>> navItemsCollection;
+        private List<String> groupList;
+
+        public ExpandableListAdapter(Activity context, List<String> groupItems,
+                                     Map<String, List<String>> navItemsCollection) {
+            this.context = context;
+            this.groupList = groupItems;
+            this.navItemsCollection = navItemsCollection;
+        }
+
+        public String getChild(int groupPosition, int childPosition) {
+            return navItemsCollection.get(groupList.get(groupPosition)).get(childPosition);
+        }
+
+        public long getChildId(int groupPosition, int childPosition) {
+            return childPosition;
+        }
+
+        public View getChildView(final int groupPosition, final int childPosition,
+                                 boolean isLastChild, View convertView, ViewGroup parent) {
+            final String laptop = (String) getChild(groupPosition, childPosition);
+            LayoutInflater inflater = context.getLayoutInflater();
+
+            if (convertView == null) {
+                convertView = inflater.inflate(R.layout.nav_child_item, null);
+            }
+
+            TextView item = (TextView) convertView.findViewById(R.id.laptop);
+
+            item.setText(laptop);
+            return convertView;
+        }
+
+        public int getChildrenCount(int groupPosition) {
+            return navItemsCollection.get(groupList.get(groupPosition)).size();
+        }
+
+        public String getGroup(int groupPosition) {
+            return groupList.get(groupPosition);
+        }
+
+        public int getGroupCount() {
+            return groupList.size();
+        }
+
+        public long getGroupId(int groupPosition) {
+            return groupPosition;
+        }
+
+        public View getGroupView(int groupPosition, boolean isExpanded,
+                                 View convertView, ViewGroup parent) {
+            if (convertView == null) {
+                LayoutInflater infalInflater = (LayoutInflater) context
+                        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                convertView = infalInflater.inflate(R.layout.nav_group_item, null);
+            }
+            TextView item = (TextView) convertView.findViewById(R.id.laptop);
+            item.setTypeface(null, Typeface.BOLD);
+            item.setText(getGroup(groupPosition));
+            return convertView;
+        }
+
+        public boolean hasStableIds() {
+            return true;
+        }
+
+        public boolean isChildSelectable(int groupPosition, int childPosition) {
+            return true;
+        }
     }
 }

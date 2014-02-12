@@ -19,13 +19,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.teamosc.collegefests.objects.FestEvents;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -110,9 +109,10 @@ public class NavigationDrawerFragment extends Fragment {
             List<String> childList = new ArrayList<String>();
             if (drawerItem.equals("Events")) {
                 //TODO: Automate it using data from xml
-                childList.add("Day1");
-                childList.add("Day2");
-                childList.add("Day3");
+                FestEvents mFestEvents = new FestEvents(getActivity());
+                for (String eventName : mFestEvents.getEventNames()) {
+                    childList.add(eventName);
+                }
             }
             navItemsCollection.put(drawerItem, childList);
         }
@@ -133,7 +133,7 @@ public class NavigationDrawerFragment extends Fragment {
 
             public boolean onChildClick(ExpandableListView parent, View v,
                                         int groupPosition, int childPosition, long id) {
-                final String selected = (String) expListAdapter.getChild(
+                final String selected = expListAdapter.getChild(
                         groupPosition, childPosition);
                 Toast.makeText(getActivity(), selected, Toast.LENGTH_LONG)
                         .show();

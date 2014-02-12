@@ -69,5 +69,11 @@ public class FestEvents {
         return null;
     }
 
+    public String[] getEventCodes() {
+        return eventCode;
+    }
 
+    public String[] getEventNames() {
+        return eventName;
+    }
 }

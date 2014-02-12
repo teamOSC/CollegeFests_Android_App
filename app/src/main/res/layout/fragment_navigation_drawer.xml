@@ -6,4 +6,5 @@
     android:divider="@android:color/transparent"
     android:dividerHeight="0dp"
     android:background="#cccc"
+    android:groupIndicator="@android:color/transparent"
     tools:context="com.teamosc.collegefests.NavigationDrawerFragment" />

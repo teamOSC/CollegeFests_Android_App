@@ -101,13 +101,7 @@ public class NavigationDrawerFragment extends Fragment {
             Bundle savedInstanceState) {
         mDrawerListView = (ExpandableListView) inflater.inflate(
                 R.layout.fragment_navigation_drawer, container, false);
-        mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                selectItem(position);
-            }
-        });
-        List<String> groupList = new ArrayList<String>();
+        final List<String> groupList = new ArrayList<String>();
         Map<String, List<String>> navItemsCollection = new LinkedHashMap<String, List<String>>();
 
         String[] drawerItems = getResources().getStringArray(R.array.drawer_items);
@@ -126,7 +120,15 @@ public class NavigationDrawerFragment extends Fragment {
         final ExpandableListAdapter expListAdapter = new ExpandableListAdapter(
                 getActivity(), groupList, navItemsCollection);
         mDrawerListView.setAdapter(expListAdapter);
-
+        mDrawerListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+            @Override
+            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
+                if (!groupList.get(groupPosition).equals("Events")) {
+                    selectItem(groupPosition);
+                }
+                return false;
+            }
+        });
         mDrawerListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
 
             public boolean onChildClick(ExpandableListView parent, View v,
@@ -336,7 +338,7 @@ public class NavigationDrawerFragment extends Fragment {
 
         public View getChildView(final int groupPosition, final int childPosition,
                                  boolean isLastChild, View convertView, ViewGroup parent) {
-            final String laptop = (String) getChild(groupPosition, childPosition);
+            final String laptop = getChild(groupPosition, childPosition);
             LayoutInflater inflater = context.getLayoutInflater();
 
             if (convertView == null) {

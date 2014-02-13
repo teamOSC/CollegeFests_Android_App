@@ -85,7 +85,7 @@ public class NavigationDrawerFragment extends Fragment {
         }
 
         // Select either the default item (0) or the last selected item.
-        selectItem(mCurrentSelectedPosition);
+        selectItem(mCurrentSelectedPosition, -1);
     }
 
     @Override
@@ -124,7 +124,7 @@ public class NavigationDrawerFragment extends Fragment {
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
                 if (!groupList.get(groupPosition).equals("Events")) {
-                    selectItem(groupPosition);
+                    selectItem(groupPosition, -1);
                 }
                 return false;
             }
@@ -135,8 +135,7 @@ public class NavigationDrawerFragment extends Fragment {
                                         int groupPosition, int childPosition, long id) {
                 final String selected = expListAdapter.getChild(
                         groupPosition, childPosition);
-                Toast.makeText(getActivity(), selected, Toast.LENGTH_LONG)
-                        .show();
+                selectItem(groupPosition, childPosition);
 
                 return true;
             }
@@ -223,7 +222,7 @@ public class NavigationDrawerFragment extends Fragment {
         mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
 
-    private void selectItem(int position) {
+    private void selectItem(int position, int eventsPosition) {
         mCurrentSelectedPosition = position;
         if (mDrawerListView != null) {
             mDrawerListView.setItemChecked(position, true);
@@ -232,7 +231,7 @@ public class NavigationDrawerFragment extends Fragment {
             mDrawerLayout.closeDrawer(mFragmentContainerView);
         }
         if (mCallbacks != null) {
-            mCallbacks.onNavigationDrawerItemSelected(position);
+            mCallbacks.onNavigationDrawerItemSelected(position, eventsPosition);
         }
     }
 
@@ -312,7 +311,7 @@ public class NavigationDrawerFragment extends Fragment {
         /**
          * Called when an item in the navigation drawer is selected.
          */
-        void onNavigationDrawerItemSelected(int position);
+        void onNavigationDrawerItemSelected(int position, int eventsPosition);
     }
 
     public class ExpandableListAdapter extends BaseExpandableListAdapter {

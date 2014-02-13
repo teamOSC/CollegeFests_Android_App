@@ -35,7 +35,7 @@ public class EventsFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
+    private int eventsPosition;
     private String mParam2;
 
     private View rootView;
@@ -48,15 +48,15 @@ public class EventsFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
+     * @param eventsPosition The position which was clicked in the NavigationDrawer.
      * @param param2 Parameter 2.
      * @return A new instance of fragment EventsFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static EventsFragment newInstance(String param1, String param2) {
+    public static EventsFragment newInstance(int eventsPosition, String param2) {
         EventsFragment fragment = new EventsFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
+        args.putInt(ARG_PARAM1, eventsPosition);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
@@ -69,7 +69,7 @@ public class EventsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
+            eventsPosition = getArguments().getInt(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
@@ -85,7 +85,7 @@ public class EventsFragment extends Fragment {
         mList.add("umair");
         mList.add("omerjerk");
         mList.add("yo");
-        mExpandableListItemAdapter = new MyExpandableListItemAdapter(getActivity(), mList);
+        mExpandableListItemAdapter = new MyExpandableListItemAdapter(getActivity(), mList, eventsPosition);
         AlphaInAnimationAdapter alphaInAnimationAdapter = new AlphaInAnimationAdapter(mExpandableListItemAdapter);
         alphaInAnimationAdapter.setAbsListView(eventsListView);
         alphaInAnimationAdapter.setInitialDelayMillis(500);
@@ -136,15 +136,17 @@ public class EventsFragment extends Fragment {
     private static class MyExpandableListItemAdapter extends ExpandableListItemAdapter<String> {
 
         private Context mContext;
+        private int eventsPosition;
 
         /*
          * This will create a new ExpandableListItemAdapter, providing a custom layout resource,
          * and the two child ViewGroups' id's. If you don't want this, just pass either just the
          * Context, or the Context and the List<T> up to super.
          */
-        private MyExpandableListItemAdapter(Context context, List<String> items) {
+        private MyExpandableListItemAdapter(Context context, List<String> items, int eventsPosition) {
             super(context, R.layout.expandable_event_card, R.id.activity_expandablelistitem_card_title, R.id.activity_expandablelistitem_card_content, items);
             mContext = context;
+            this.eventsPosition = eventsPosition;
         }
 
         @Override
@@ -153,7 +155,7 @@ public class EventsFragment extends Fragment {
             if (tv == null) {
                 tv = new TextView(mContext);
             }
-            tv.setText("Checking derp");
+            tv.setText("Event Position = " + String.valueOf(eventsPosition));
             return tv;
         }
 

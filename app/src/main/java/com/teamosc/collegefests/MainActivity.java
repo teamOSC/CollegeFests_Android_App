@@ -62,13 +62,13 @@ public class MainActivity extends ActionBarActivity
     }
 
     @Override
-    public void onNavigationDrawerItemSelected(int position) {
+    public void onNavigationDrawerItemSelected(int position, int eventsPosition) {
         // update the main content by replacing fragments
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment showFragment = null;
         switch (position){
             case 0: showFragment = AboutFragment.newInstance("a", "a"); break;
-            case 1: showFragment = EventsFragment.newInstance("a", "a"); break;
+            case 1: showFragment = EventsFragment.newInstance(eventsPosition, "a"); break;
             case 2: showFragment = UpdatesFragment.newInstance("a", "a"); break;
             case 3: showFragment = RegisterFragment.newInstance("a", "a"); break;
             case 4: showFragment = ContactFragment.newInstance("a", "a"); break;

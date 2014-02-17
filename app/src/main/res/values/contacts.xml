@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string-array name="contacts">
-        <item>Umair Khan<br/>omerjerk@gmail.com</item>
+    <string-array name="contacts_title">
+        <item>Umair Khan</item>
+    </string-array>
+
+    <string-array name="contacts_descs">
+        <item>omerjerk@gmail.com</item>
     </string-array>
 
 </resources>

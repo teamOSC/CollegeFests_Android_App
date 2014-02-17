@@ -136,7 +136,6 @@ public class NavigationDrawerFragment extends Fragment {
                 final String selected = expListAdapter.getChild(
                         groupPosition, childPosition);
                 selectItem(groupPosition, childPosition);
-
                 return true;
             }
         });
@@ -369,9 +368,9 @@ public class NavigationDrawerFragment extends Fragment {
         public View getGroupView(int groupPosition, boolean isExpanded,
                                  View convertView, ViewGroup parent) {
             if (convertView == null) {
-                LayoutInflater infalInflater = (LayoutInflater) context
+                LayoutInflater mLayoutInflater = (LayoutInflater) context
                         .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                convertView = infalInflater.inflate(R.layout.nav_group_item, null);
+                convertView = mLayoutInflater.inflate(R.layout.nav_group_item, null);
             }
             TextView item = (TextView) convertView.findViewById(R.id.laptop);
             item.setTypeface(null, Typeface.BOLD);

@@ -2,6 +2,7 @@ package com.teamosc.collegefests.objects;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.util.Log;
 
 import com.teamosc.collegefests.R;
 
@@ -12,15 +13,25 @@ public class Contacts {
 
     private Context context;
 
-    private String[] contacts;
+    private String[] contactTitles;
+    private String[] contactDescs;
 
     public Contacts (Context context) {
         this.context = context;
         Resources mResources = this.context.getResources();
-        contacts = mResources.getStringArray(R.array.contacts);
+        contactTitles = mResources.getStringArray(R.array.contacts_title);
+        contactDescs = mResources.getStringArray(R.array.contacts_title);
     }
 
-    public String[] getContacts() {
-        return contacts;
+    public String[] getContactTitles() {
+        return contactTitles;
+    }
+
+    public String[] getContactDesc() {
+        return contactDescs;
+    }
+
+    public int getLength() {
+        return contactTitles.length;
     }
 }
